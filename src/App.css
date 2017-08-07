@@ -14,6 +14,7 @@ body, .app {
   padding: 10px 0;
   background: #2e7c31;
   text-align: center;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 .list-books-title h1 {
   font-weight: 400;
@@ -24,10 +25,12 @@ body, .app {
 .list-books-content {
   padding: 0 0 80px;
   flex: 1;
+  text-align: center;
 }
 
 .bookshelf {
   padding: 0 10px 20px;
+  text-align: center;
 }
 
 @media (min-width: 600px) {
@@ -54,7 +57,7 @@ body, .app {
   height: 50px;
   border-radius: 50%;
   background: #2e7d32;
-  background-image: url('./icons/add.svg');
+  background-image: url('./icons/search.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 28px;
