@@ -62,11 +62,20 @@ class SearchBook extends Component {
   }
 
   /**
+  *@description Change book shelf on search page
+  *@param {book}
+  *@param {shelf} bookshelf
+  */
+  changeShelf(book, shelf){
+    book.shelf = shelf
+    this.setState({'searchResults' : this.state.searchResults})
+    this.props.onShelfChange(book, shelf)
+  }
+
+  /**
   *@description render search component UI
   */
   render() {
-    const { onShelfChange } = this.props
-
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -92,7 +101,7 @@ class SearchBook extends Component {
                         backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
                       </div>
                       <div className="book-shelf-changer">
-                      <select value={book.shelf} onChange={(event) => onShelfChange(book, event.target.value)}>
+                      <select value={book.shelf} onChange={(event) => this.changeShelf(book, event.target.value)}>
                         <option value="none" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>

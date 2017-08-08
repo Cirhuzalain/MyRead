@@ -1,10 +1,10 @@
 # React Nanodegree Assignment Part 1 (MyRead)
 
 ## Clone the project
-<p> After cloning the project use <code> cd MyRead </code> </p>
+After cloning the project use `cd MyRead`
 
 ## Install Dependency
-<p> Use <code>npm install</code> command </p>
+Use `npm install` command
 
 ## Run the project
-<p> Use <code>npm start</code> command </p>
+Use `npm start` command

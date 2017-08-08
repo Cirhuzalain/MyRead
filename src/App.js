@@ -1,7 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import BookShelf from './ListBooks'
+import ListBooks from './ListBooks'
 import SearchBook from './Search'
+import keyIndex from 'react-key-index'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
@@ -37,7 +38,7 @@ class BooksApp extends React.Component {
   *@param {book}
   *@param {shelf} bookshelf
   */
-  changeShelf = (book, shelf) => {
+  changeShelf = (book, shelf = book.shelf) => {
     BooksAPI.update(book, shelf).then(response => {
       const currentlyReading = response.currentlyReading
       const read = response.read
@@ -47,7 +48,6 @@ class BooksApp extends React.Component {
       const stateIds = this.state.books.map(bookinfo => bookinfo.id)
 
       if (stateIds.indexOf(book.id) === -1) {
-        book.shelf = shelf
         newShelf.push(book)
       }
 
@@ -88,7 +88,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path='/' render={() => (
-          <BookShelf onShelfChange={this.changeShelf} books={this.state.books} />
+          <ListBooks onShelfChange={this.changeShelf} books={keyIndex(this.state.books, 1)} />
         )}/>
         <Route path='/search' render={() => (
           <SearchBook onShelfChange={this.changeShelf} books={this.state.books} />
