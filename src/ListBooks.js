@@ -20,7 +20,7 @@ class ListBooks extends Component {
     const { onShelfChange, books } = this.props
 
     let read, currentlyReading, wantToRead
-    
+
     read = books.filter((book) => book.shelf === 'read')
     currentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
     wantToRead = books.filter((book) => book.shelf === 'wantToRead')
@@ -45,8 +45,7 @@ class ListBooks extends Component {
             <BookShelf
               bookOnShelf={read}
               title="Read"
-              onShelfChange={onShelfChange}/>
-
+              onShelfChange={onShelfChange} />
             </div>
           </div>
           <div className="open-search">

@@ -13,16 +13,8 @@ import './App.css'
 */
 class BooksApp extends React.Component {
 
-  /**
-  *@description Books app constructor
-  *@param {props}
-  */
-  constructor(props){
-    super(props)
-
-    this.state = {
-      books: []
-    }
+  state = {
+    books: []
   }
 
   /**

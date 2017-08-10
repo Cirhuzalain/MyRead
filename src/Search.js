@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import debounce from 'lodash/debounce'
 import * as BooksAPI from './BooksAPI'
 import { Link } from 'react-router-dom'
 
@@ -21,6 +22,7 @@ class SearchBook extends Component {
     for (const bookInfo of this.props.books){
       this.bookOnShelf.set(bookInfo.id, bookInfo)
     }
+    this.searchInfo = debounce(this.searchBook, 300)
   }
 
   static propTypes = {
@@ -38,7 +40,6 @@ class SearchBook extends Component {
     if (search !== ''){
       BooksAPI.search(search, 25).then(response => {
         if (typeof response !== 'undefined' && !response.error) {
-
           let uniqueResults = []
           for(let bookInfo of response){
 
@@ -55,9 +56,10 @@ class SearchBook extends Component {
               uniqueResults.push(bookInfo)
             }
           }
+
           this.setState({'searchResults' : uniqueResults })
         }
-      }).catch(error => this.setState({'searchResults' : []}))
+      }).catch(error => this.setState({'searchResults' : [] }))
     }
   }
 
@@ -81,7 +83,7 @@ class SearchBook extends Component {
         <div className="search-books-bar">
         <Link to='/' className='close-search'>Close</Link>
         <div className="search-books-input-wrapper">
-          <input onChange={(event) => this.searchBook(event.target.value)}
+          <input onChange={(event) => this.searchInfo(event.target.value)}
                   type="text" placeholder="Search by title or author"/>
         </div>
       </div>
@@ -91,15 +93,17 @@ class SearchBook extends Component {
             <h2 className="bookshelf-title">Search Results</h2>
             <div className="bookshelf-books">
             <ol className="books-grid">
-              {this.state.searchResults.map((book) => (
+              {this.state.searchResults.map(book => (
                 <li key={book.id}>
                   <div className="book">
                     <div className="book-top">
-                      <div className="book-cover" style={{
-                        width: 128,
-                        height: 188,
-                        backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
-                      </div>
+                      {book.imageLinks && (
+                        <div className="book-cover" style={{
+                          width: 128,
+                          height: 188,
+                          backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
+                        </div>
+                      )}
                       <div className="book-shelf-changer">
                       <select value={book.shelf} onChange={(event) => this.changeShelf(book, event.target.value)}>
                         <option value="none" disabled>Move to...</option>
@@ -110,10 +114,10 @@ class SearchBook extends Component {
                       </select>
                     </div>
                   </div>
-                  <div className="book-title">{book.title}</div>
-                    {book.authors.map(name => (
-                      <div key={name} className="book-authors">{name}</div>
-                    ))}
+                  {book.title && <div className="book-title">{book.title}</div>}
+                  {book.authors && book.authors.map(name => (
+                    <div key={name} className="book-authors">{name}</div>
+                  ))}
                   </div>
                 </li>
               ))}

@@ -10,11 +10,13 @@ function Book(props){
     <li key={bookInfo._languageId}>
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{
-            width: 128,
-            height: 188,
-            backgroundImage: `url(${bookInfo.imageLinks.thumbnail})` }}>
-          </div>
+          {bookInfo.imageLinks && (
+            <div className="book-cover" style={{
+              width: 128,
+              height: 188,
+              backgroundImage: `url(${bookInfo.imageLinks.thumbnail})` }}>
+            </div>
+          )}
           <div className="book-shelf-changer">
             <select value={bookInfo.shelf} onChange={(event) => onShelfChange(bookInfo, event.target.value)}>
               <option disabled>Move to...</option>
@@ -25,10 +27,10 @@ function Book(props){
             </select>
           </div>
         </div>
-        <div className="book-title">{bookInfo.title}</div>
-          {bookInfo.authors.map(name => (
-            <div key={name} className="book-authors">{name}</div>
-          ))}
+        {bookInfo.title && <div className="book-title">{bookInfo.title}</div>}
+        {bookInfo.authors && bookInfo.authors.map(name => (
+          <div key={name} className="book-authors">{name}</div>
+        ))}
       </div>
     </li>
   )
