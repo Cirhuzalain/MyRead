@@ -32,38 +32,17 @@ class BooksApp extends React.Component {
   */
   changeShelf = (book, shelf = book.shelf) => {
     BooksAPI.update(book, shelf).then(response => {
-      const currentlyReading = response.currentlyReading
-      const read = response.read
-      const wantToRead = response.wantToRead
 
       let newShelf = []
       const stateIds = this.state.books.map(bookinfo => bookinfo.id)
 
+      //check if we have a new book
       if (stateIds.indexOf(book.id) === -1) {
         newShelf.push(book)
       }
 
-      for (let id of currentlyReading) {
-        for (let bookshelf of this.state.books) {
-          if (bookshelf.id === id && bookshelf.shelf !== 'currentlyReading') {
-            bookshelf.shelf = 'currentlyReading'
-          }
-        }
-      }
-      for (let id of read) {
-        for (let bookshelf of this.state.books) {
-          if (bookshelf.id === id && bookshelf.shelf !== 'read') {
-            bookshelf.shelf = 'read'
-          }
-        }
-      }
-      for (let id of wantToRead) {
-        for (let bookshelf of this.state.books) {
-          if (bookshelf.id === id && bookshelf.shelf !== 'wantToRead') {
-            bookshelf.shelf = 'wantToRead'
-          }
-        }
-      }
+      this.setNewShelf(response)
+
       if(newShelf.length > 0){
         this.setState({'books': this.state.books.concat([newShelf[0]]) })
       } else {
@@ -71,6 +50,25 @@ class BooksApp extends React.Component {
       }
 
     }).catch(error => this.setState({'books' : []}))
+  }
+
+  /**
+  *@description set book shelf
+  *@param data
+  */
+  setNewShelf(data) {
+    for (let shelf in data) {
+      data[shelf].map(id => {
+        this.state.books.map(bookshelf => {
+          if (bookshelf.id === id && bookshelf.shelf !== shelf) {
+            bookshelf.shelf = shelf
+          }
+          return bookshelf
+        })
+        return id
+      })
+
+    }
   }
 
   /**

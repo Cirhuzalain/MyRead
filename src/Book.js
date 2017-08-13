@@ -1,10 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 
 /**
-*@description Book componeent
+*@description Book component
 *@param props
 */
-function Book(props){
+const Book = (props) => {
   const { bookInfo, onShelfChange } = props
   return (
     <li key={bookInfo._languageId}>
@@ -34,6 +36,11 @@ function Book(props){
       </div>
     </li>
   )
+}
+
+Book.propTypes = {
+  bookInfo: PropTypes.object.isRequired,
+  onShelfChange: PropTypes.func.isRequired
 }
 
 export default Book

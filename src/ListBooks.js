@@ -19,11 +19,9 @@ class ListBooks extends Component {
   render() {
     const { onShelfChange, books } = this.props
 
-    let read, currentlyReading, wantToRead
-
-    read = books.filter((book) => book.shelf === 'read')
-    currentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
-    wantToRead = books.filter((book) => book.shelf === 'wantToRead')
+    const read = books.filter((book) => book.shelf === 'read')
+    const currentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
+    const wantToRead = books.filter((book) => book.shelf === 'wantToRead')
 
     return (
       <div className="list-books">

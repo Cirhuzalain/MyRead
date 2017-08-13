@@ -18,10 +18,6 @@ class SearchBook extends Component {
     this.state = {
       searchResults: [],
     }
-    this.bookOnShelf = new Map()
-    for (const bookInfo of this.props.books){
-      this.bookOnShelf.set(bookInfo.id, bookInfo)
-    }
     this.searchInfo = debounce(this.searchBook, 300)
   }
 
@@ -39,20 +35,23 @@ class SearchBook extends Component {
 
     if (search !== ''){
       BooksAPI.search(search, 25).then(response => {
-        if (typeof response !== 'undefined' && !response.error) {
+        if (!!response && !response.error) {
           let uniqueResults = []
           for(let bookInfo of response){
 
             //set appropriate book shelf base on current shelf state
-            if (this.bookOnShelf.has(bookInfo.id)) {
-              bookInfo.shelf = this.bookOnShelf.get(bookInfo.id).shelf
+            const bookOnShelf = this.props.books.filter((item, index, data) => item.id === bookInfo.id)
+
+            if (bookOnShelf.length === 1) {
+              bookInfo.shelf = bookOnShelf[0].shelf
             } else {
               bookInfo.shelf = ''
             }
 
             //remove duplicate book
-            let i = uniqueResults.findIndex(tmp => tmp.id === bookInfo.id)
-            if(i === -1){
+            let i = uniqueResults.find(tmp => tmp.id === bookInfo.id)
+
+            if(!i){
               uniqueResults.push(bookInfo)
             }
           }
